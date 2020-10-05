@@ -25,7 +25,6 @@ Sharp designer is a windows forms generator, it generate, show and populate wind
 Indices and tables
 ------------------
 
-* :ref:`genindex`
 * :ref:`search`
 
 Features
