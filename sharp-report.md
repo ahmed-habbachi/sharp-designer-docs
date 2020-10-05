@@ -118,6 +118,44 @@ properties:
 - **RepeatOnEveryPage** bool indicate wherther or not to repeat the group band (which contains the table header) on every page.
 - **GroupFields** ICollection<string> comma separated strings indicating the grouping fields.
 
+example:
+
+down bellow the report mask example show how to create a grouped report and how to add the grouped member as a lable before each table group;
+
+```json
+{
+  "IsLandscape": true,
+  "Controls": [{
+    "BandType": "GroupHeaderBand",
+    "Caption": "CODE QUALITE: ",
+  },{
+    "BandType": "GroupHeaderBand",
+    "BindingMember":'CODE_QUALITE',
+    "InNewLine": false
+  },{
+    "Type": "Table",
+    "HeaderBorders": "8",
+    "DetailBorders": "0",
+    "TableOptions": {
+      "Columns": [{
+        "BindingMember": "NOM",
+        "Width": 100
+      },{
+        "BindingMember": "DATE_NAISSANCE",
+        "Caption": "DATE NAISSANCE",
+      },{
+        "BindingMember": "CODE_QUALITE",
+        "Caption": "CODE QUALITE",
+      }]
+    }
+  }],
+  "ReportBandOptions": {
+  "RepeatOnEveryPage": true,
+  "GroupFields": ['CODE_QUALITE']
+  }
+}
+```
+
 ### 1.2.4. ReportControl
 
 properties:
