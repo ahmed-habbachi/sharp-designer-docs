@@ -12,9 +12,12 @@ Sharp designer is a windows forms generator, it generate, show and populate wind
    :maxdepth: 2
    :caption: Layout & Component:
 
-   component-mask
-   control-field
-   grid-options
+   1-component-mask
+   2-tab-panels
+   3-control-field
+   4-grid-options
+   5-summary-items
+   6-action-control
 
 .. toctree::
    :maxdepth: 2
