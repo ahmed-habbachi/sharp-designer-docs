@@ -57,10 +57,10 @@ Properties:
 - **ShowType**: ShowTypeEnum [ModalAndRefresh, Modal, NotModal]
   allow the user to open a form with a specific behaviour:
 
-  - ModalAndRefresh: default open a modal form and refresh the current page as soon and the modal form closes
-  - Modal: open a modal form and do not refresh the current form after the modal closes
-  - NotModal: open a form without Modal behaviour
-  - CloseOnFormToOpen: open a form without modal behaviour and close the current one
+  - ModalAndRefresh: default open a modal form and refresh the current page as soon and the modal form closes.
+  - Modal: open a modal form and do not refresh the current form after the modal closes.
+  - NotModal: open a form without Modal behaviour.
+  - CloseOnFormToOpen: open a form without modal behaviour and close the current one.
 
 - **sqlSelect**: string
   defines the main select statement of the form, "mainQuery" this is the only query that will be executed on each refresh.

@@ -124,34 +124,46 @@ down bellow the report mask example show how to create a grouped report and how 
 
 ```json
 {
-  "IsLandscape": true,
-  "Controls": [{
+  "IsLandscape": false,
+  "Controls": [
+  {
     "BandType": "GroupHeaderBand",
     "Caption": "CODE QUALITE: ",
-  },{
+  },
+  {
     "BandType": "GroupHeaderBand",
     "BindingMember":'CODE_QUALITE',
-    "InNewLine": false
-  },{
-    "Type": "Table",
-    "HeaderBorders": "8",
-    "DetailBorders": "0",
-    "TableOptions": {
-      "Columns": [{
-        "BindingMember": "NOM",
-        "Width": 100
-      },{
-        "BindingMember": "DATE_NAISSANCE",
-        "Caption": "DATE NAISSANCE",
-      },{
+    "InNewLine": false,
+    "Style": {
+        "Name": "Title",
+        "FontFamily": "Georgia",
+        "FontSize": 14,
+        "FontStyle": "Bold"
+      }
+  },
+    {
+      "Type": "Table",
+      "TableOptions": {
+        "Columns": [
+        {
+          "BindingMember": "NOM",
+          "Width": 100
+        },{
+          "BindingMember": "DATE_NAISSANCE",
+          "Caption": "DATE NAISSANCE",
+          "TextAlignment": "MiddleRight",
+        },{
         "BindingMember": "CODE_QUALITE",
-        "Caption": "CODE QUALITE",
-      }]
-    }
-  }],
+          "Caption": "CODE QUALITE",
+        }
+        ],
+        "HeaderBorders": "8",
+        "DetailBorders": "0"
+      }
+    }],
   "ReportBandOptions": {
-  "RepeatOnEveryPage": true,
-  "GroupFields": ['CODE_QUALITE']
+    "RepeatOnEveryPage": true,
+    "GroupFields": ['CODE_QUALITE']
   }
 }
 ```
@@ -169,6 +181,7 @@ properties:
 - **Style** SharpStyleSheet represent the style sheet to apply [read more](#125SharpStyleSheet)
 - **Position** string represent a comma seperated values for the x,y coordinate of the position of the control
 - **InNewLine** bool default is true allow to write add the control in a new line or in the same line as the previous one
+- **WordWrap** bool default is false allow the text to be wraped in a multiple lines
 - **IsUnbound** bool represent a readonly property that determine if this control in bound or unbound control depending on the BindingMember and DataSource
 - **TableOptions** ReportTableOptions contains extra table option if the control type is Table [read more](#1241-TableOptions)
 
@@ -193,6 +206,20 @@ properties:
 - **Caption** string represent the column name
 - **BindingMember** string represent the field name in the query result set that will be bound
 - **Width** float represent the column width in the report
+- **TextAlignment** TextAlignment text or int
+
+  TopLeft = 1,
+  TopCenter = 2,
+  TopRight = 4,
+  MiddleLeft = 16,
+  MiddleCenter = 32,
+  MiddleRight = 64,
+  BottomLeft = 256,
+  BottomCenter = 512,
+  BottomRight = 1024,
+  TopJustify = 2048,
+  MiddleJustify = 4096,
+  BottomJustify = 8096
 
 ### 1.2.5. SharpStyleSheet
 
