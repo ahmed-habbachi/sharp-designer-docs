@@ -197,40 +197,13 @@ It is a json representation configuration of a window/form.
 
 ## 1.2. TabPanels
 
-## 1.2.3 Properties
+### 1.2.3 Properties
 
 - **Caption**: string
   define the panel caption
 
 - **ControlFields**: ICollection<ControlField>
   define the list of controls to add to the panel [ControlField](#controlfield).
-
-```json
-controlFields: [
-  {
-    type: "Text",
-    bindingMember: "NOM",
-    caption: "NOM",
-    columnIndex: 0,
-  },
-  {
-    name: "masterControl",
-    type: "Combo",
-    bindingMember: "TIERS",
-    dataSource: "SELECT TIERS, NOM FROM SREC.TIERS",
-    caption: "Client",
-  },
-  {
-    type: "Combo",
-    bindingMember: "ID_AFFAIRE",
-    dataSource: "SELECT ID_AFFAIRE, TIERS_CLIENT AS TIERS FROM SREC.AFFAIRE WHERE TIERS_CLIENT='%MASTER_VALUE%'",
-    caption: "Affaire",
-    displayMember: "ID_AFFAIRE",
-    valueMember: "ID_AFFAIRE",
-    masterControl: "masterControl"
-  }
-],
-```
 
 - **layoutColumnCount**: integer
   the number of columns that the form will be using to place the controls, possible values number > 0.
@@ -250,7 +223,7 @@ controlFields: [
 
 - **DockStyle**: DockingStyle [Float = 0, Top = 1, Bottom = 2, Left = 3, Right = 4, Fill = 5]
 
-## 1.2.3 Exemple
+### 1.2.3 Exemple
 
 ```json
 tabPanels : [
@@ -344,7 +317,7 @@ tabPanels : [
 
 define the control to be added to the form.
 
-Properties:
+### 1.3.1 Properties
 
 - **Caption**: string, text to be shown as caption.
 - **Type**: string, control type, possible values: ["TEXT"(default), "LABEL", "DATE", "DATETIME", "NUMERIC", "DECIMAL0", "DECIMAL2", "DECIMAL3", "PERCENT", "COMBO", "SEARCH", "CHECK", "GRID", "MEMO"]
@@ -364,7 +337,38 @@ public int DropDownRows { get; set; }
 - **ColumnSpan**: string
 - **RowSpan**: string
 
+### 1.3.2 Example
+
+```json
+controlFields: [
+  {
+    type: "Text",
+    bindingMember: "NOM",
+    caption: "NOM",
+    columnIndex: 0,
+  },
+  {
+    name: "masterControl",
+    type: "Combo",
+    bindingMember: "TIERS",
+    dataSource: "SELECT TIERS, NOM FROM SREC.TIERS",
+    caption: "Client",
+  },
+  {
+    type: "Combo",
+    bindingMember: "ID_AFFAIRE",
+    dataSource: "SELECT ID_AFFAIRE, TIERS_CLIENT AS TIERS FROM SREC.AFFAIRE WHERE TIERS_CLIENT='%MASTER_VALUE%'",
+    caption: "Affaire",
+    displayMember: "ID_AFFAIRE",
+    valueMember: "ID_AFFAIRE",
+    masterControl: "masterControl"
+  }
+],
+```
+
 ## 1.4. GridOptions
+
+### 1.4.1 Properties
 
 - **Caption**: string, Panel title
 - **SQLExecute**: string, define sql to execute action on row double-click event (read more in IAction section).
@@ -381,6 +385,39 @@ public int DropDownRows { get; set; }
 - **Heigth** int, the overall grid heigth
 - **Columns**: ICollection<Field>, define grid columns.
 - **SummaryItems**: ICollection<SummaryItem>, define summaryItems for the grid [read more](#summaryitems)
+
+### 1.4.1 Example
+
+```json
+"gridoptions": {
+  "Heigth": 400,
+  "styleEvenRow": "true",
+  "styleOddRow": "true",
+  "showGroupingPanel": "true",
+  "showAutoFilterRow": "true",
+  "multiSelect": "id",
+  "columns": [
+    {
+      "bindingMember": "LOGIN",
+      "caption": "Modifie par"
+    },
+    {
+      "bindingMember": "DATE_USER_CREAT",
+      "Caption": "Date creation"
+    },
+    {
+      "bindingMember": "DATE_USER_MODIF",
+      "Caption": "Date modification"
+    }
+  ],
+  "summaryItems":[{
+    "type": "Sum",
+    "fieldName": "ORDRE",
+    "AddToColumn": "ORDRE",
+  }
+  ]
+}
+```
 
 ## 1.5. SummaryItems
 
@@ -419,6 +456,9 @@ Properties:
 - **FormToOpen** string, form name (identifier) to open.
 - **ReportToOpen** string, report name (identifier) to open.
 - **Args** string, comma separated args to pass to one of the obove targets.
+- **SQLSelect** string, contains a query to override the mask sqlSelect.
+- **BeforeMessage** string, message identifier to allow to show a message before action execution from db.
+- **AfterMessage** string, message identifier to allow to show a message after action execution from db.
 
 we can also add a drop down menu or a group of buttons to group some buttons that have the same context for example with a "ActionControlGroup":
 
@@ -432,8 +472,105 @@ Properties:
 
 ### 1.6.3. ActionControlTileGroup
 
-Properties:
+#### 1.6.3.1 Properties
 
 - **Caption** string, the grouping caption.
 - **TilesGroups** ICollection<ActionControlTileGroup>, a second level group.
 - **Tiles** ICollection<ActionControl>, a collection of tiles to add to the groupping in the main form
+
+#### 1.6.3.2 Example
+
+```json
+"tilesGroups": [
+  {
+    "Caption": "System Settings",
+    "tiles": [{
+      "Caption": "Table Param",
+      "ImagePath": "",
+      "ItemSize": "Wide", // Default, Small, Medium, Wide, Large
+      "FormToOpen": "FrmSysParam",
+      "imagePath": "Resources/Assets/TileImages/Parameter.png",
+      "BackColor": "Orange", // System.Drawing.Color
+    },
+    {
+      "Caption": "Table Param List",
+      "FormToOpen": "FrmSysParamList",
+      "BackColor": "DarkKhaki",
+      "imagePath": "Resources/Assets/TileImages/burning-house.png",
+    },
+    {
+      "Caption": "User affectation",
+      "FormToOpen": "FrmAffectationUtilisateur",
+      "BackColor": "Coral",
+      "imagePath": "Resources/Assets/TileImages/user-settings.png",
+    },
+    {
+      "Caption": "Test Form",
+      "FormToOpen": "FrmTest",
+      "BackColor": "Gray",
+      "imagePath": "Resources/Assets/TileImages/user-settings.png",
+    }]},
+  {"Caption": "Empty Group",},
+  {
+    "caption": "Others",
+    "TilesGroups": [], // Nested groups
+    "tiles": [ // Nested Items
+      {
+        "ItemSize": "Wide", // Default, Small, Medium, Wide, Large
+        "Caption": "Parametrage : Profil",
+        "FormToOpen": "FrmProfil",
+        "BackColor": "Gray",
+        "imagePath": "house-fire.png",
+      },
+      {
+        "ItemSize": "Large", // Default, Small, Medium, Wide, Large
+        "Caption": "Parametrage : Utilisateur",
+        "FormToOpen": "FrmUtilisateur",
+        "BackColor": "Cyan",
+        "imagePath": "speaker-ptf.png",
+      },
+      {
+        "Caption": "Groupe d'action",
+        "FormToOpen": "FrmGroupeAction",
+        "BackColor": "LightGreen",
+      },
+      {
+        "Caption": "Action",
+        "FormToOpen": "FrmAction",
+        "BackColor": "Green",
+      },
+      {
+        "name": "hideFrmSort_show",
+        "Caption": "Sort",
+        "FormToOpen": "FrmSort",
+        "BackColor": "Coral",
+      },
+      {
+        "Caption": "Definition des campagnes",
+        "FormToOpen": "FrmCampagne",
+        "BackColor": "DarkGreen",
+      },
+      {
+        "Caption": "Definition des portefeuilles",
+        "FormToOpen": "FrmPtf",
+        "BackColor": "DarkKhaki",
+      },
+      {
+        "Caption": "Definition des scores",
+        "FormToOpen": "FrmScore",
+        "BackColor": "DarkSalmon",
+      },
+      {
+        "Caption": "Gestion des Rappels",
+        "FormToOpen": "FrmRappel",
+        "BackColor": "DarkOrchid",
+      },
+      {
+        "Caption": "Gestion des portfeuilles manuels",
+        "FormToOpen": "FrmPtfList",
+        "BackColor": "DarkSlateGray",
+      },
+    ]
+  }
+]
+```

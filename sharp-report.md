@@ -163,7 +163,7 @@ down bellow the report mask example show how to create a grouped report and how 
     }],
   "ReportBandOptions": {
     "RepeatOnEveryPage": true,
-    "GroupFields": ['CODE_QUALITE']
+    "GroupFields": ["CODE_QUALITE"]
   }
 }
 ```
