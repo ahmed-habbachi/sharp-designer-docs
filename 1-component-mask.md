@@ -4,7 +4,7 @@ It is a json representation configuration of a window/form.
 
 ## 1.1 ComponentMask
 
-Properties:
+### 1.1.1 Properties
 
 - **Buttons**: ICollection<ActionControl>
   add dynamic buttons to the top bar [read more](#actioncontrol)
@@ -112,9 +112,92 @@ Properties:
 
 - We can use passed argument to the form in the queries using (`%Arg1%`, `%Arg2%` ...), these argument should be indicated from the parent form in the **_Args_** of an IAction base entity ([ActionControl](#actioncontrol) and [GridOptions](#gridoptions)).
 
+### 1.1.2 Exemple
+
+```json
+{
+  "layoutType": "EditListForm", // EditListForm, DetailEditForm, ListForm
+  "caption": "Parametrage : Utilisateur",
+  "imagePath": "Resources/golobal-flat-24x24.png",
+  "sqlSelect": "ParamRef%FrmUtilisateur.sqlSelect%",
+  "sqlInsert": "ParamRef%FrmUtilisateur.sqlInsert%",
+  "sqlUpdate": "ParamRef%FrmUtilisateur.sqlUpdate%",
+  "sqlDelete": "ParamRef%FrmUtilisateur.sqlDelete%",
+  "layoutFilling": "Horizontal", // Horizontal, Vertical
+  "buttons": [
+    {
+      "caption": "User report",
+      "imagePath": "navigation/home_32x32.png",
+      "reportToOpen": "User",
+      "args": "%MAIN_GRID.SELECTION%",
+      "AfterMessage": "Test"
+    },
+  ],
+  "tabPanels" : [
+    {
+      "caption": "Details",
+      "layoutColumnCount": 2,
+      "ControlFields": [
+        {
+          "type": "Text",
+          "bindingMember": "LOGIN",
+          "caption": "Login",
+          "columnIndex": 0,
+          "mandatory": true,
+          "readOnly": false,
+          "defaultValue": ""
+        },
+        {
+          "type": "Combo",
+          "bindingMember": "ID_PROFIL",
+          "dataSource": "ParamRef%cmbProfil.ds%",
+          "displayMember": "DESIGNATION",
+          "caption": "Profil",
+          "DataRowColumns": "DATE_USER_CREAT"
+        },
+        {
+          "type": "Text",
+          "bindingMember": "PRENOM",
+          "caption": "Prenom",
+        },
+        {
+          "type": "Text",
+          "bindingMember": "NOM",
+          "caption": "Nom",
+        },
+        {
+          "type": "Text",
+          "bindingMember": "PASSWORD",
+          "caption": "Mot de passe",
+        },
+        {
+          "type": "Text",
+          "bindingMember": "ABREVIATION",
+          "caption": "Abreviation",
+          "columnIndex": 3
+        },
+        {
+          "type": "Check",
+          "bindingMember": "STATUT",
+          "caption": "Actif",
+        },
+        {
+          "type": "Check",
+          "bindingMember": "B_MODIFIER_PTF",
+          "caption": "Modifier les portefeuilles",
+        }
+      ]
+    }
+  ],
+  "gridoptions": {
+    "MultiSelect": "ID_USER"
+  }
+}
+```
+
 ## 1.2. TabPanels
 
-Properties:
+## 1.2.3 Properties
 
 - **Caption**: string
   define the panel caption
@@ -167,6 +250,95 @@ controlFields: [
 
 - **DockStyle**: DockingStyle [Float = 0, Top = 1, Bottom = 2, Left = 3, Right = 4, Fill = 5]
 
+## 1.2.3 Exemple
+
+```json
+tabPanels : [
+  {
+    "caption": "First Tab",
+    "layoutColumnCount": 2,
+    "controlFields": [
+      {
+        "type": "Numeric",
+        "bindingMember": "ORDRE",
+        "caption": "Ordre",
+        "mandatory": true,
+      },
+      {
+        // "type": "Memo",
+        "name": "txtDesignation",
+        "bindingMember": "DESIGNATION",
+        "caption": "Designation",
+        "mandatory": true,
+      },
+      {
+        "type": "Check",
+        "name": "chkInform",
+        "bindingMember": "B_INFORME",
+        "caption": "Informe",
+      },
+      {
+        "type": "Check",
+        "bindingMember": "B_AUTRE_RELANCE",
+        "caption": "B_AUTRE_RELANCE",
+        "readOnly": true,
+      },
+    ]
+  },
+  {
+    "caption": "Second Tab",
+    "layoutColumnCount": 2,
+    "controlFields": [
+      {
+        "type": "Check",
+        "bindingMember": "B_MODIF_DATE_RELANCE",
+        "caption": "B_MODIF_DATE_RELANCE",
+      },
+      {
+        "type": "Check",
+        "bindingMember": "B_ACTIVER_DATE_RDV",
+        "caption": "B_ACTIVER_DATE_RDV",
+      },
+      {
+        "type": "Check",
+        "bindingMember": "B_DATE_RDV",
+        "caption": "B_DATE_RDV",
+      },
+      {
+        "type": "Text",
+        "bindingMember": "NB_JOURS",
+        "caption": "NB_JOURS",
+      },
+      {
+        "type": "Check",
+        "bindingMember": "B_OBSERVATION",
+        "caption": "B_OBSERVATION",
+      },
+      {
+        "type": "Check",
+        "bindingMember": "B_LIVRE_BLANC",
+        "caption": "B_LIVRE_BLANC",
+      },
+      {
+        "type": "Text",
+        "bindingMember": "NB_JOURS_MIN",
+        "caption": "NB_JOURS_MIN",
+      },
+      {
+        "type": "Text",
+        "bindingMember": "GROUPE",
+        "caption": "GROUPE",
+      },
+      {
+        "type": "DateTime",
+        "bindingMember": "DATE_USER_MODIF",
+        "caption": "GROUPE",
+        "format": ""
+      }
+    ]
+  }
+],
+```
 
 ## 1.3. ControlField
 
