@@ -20,11 +20,11 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'Sharp Designer'
-copyright = '2020, Ahmed HABBACHI'
+copyright = '2021, Ahmed HABBACHI'
 author = 'Ahmed HABBACHI'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '1.1.0'
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,17 +1,19 @@
-# 1. ComponentMask
+# 1. Component Mask
 
 It is a json representation configuration of a window/form.
+
+## 1.1 ComponentMask
 
 Properties:
 
 - **Buttons**: ICollection<ActionControl>
-  add dynamic buttons to the top bar [read more](ActionControl.md)
+  add dynamic buttons to the top bar [read more](#actioncontrol)
 
 - **ButtonsGroups**: ICollection<ActionControlGroup>
-  add dynamic buttons group as dropdown menu [read more](ActionControl.md)
+  add dynamic buttons group as dropdown menu [read more](#actioncontrolgroup)
 
 - **TilesGroups**: ICollection<ActionControlTileGroup>
-  add dynamic tile buttons group, usualy used in main form [read more](ActionControl.md)
+  add dynamic tile buttons group, usualy used in main form [read more](#actioncontroltilegroup)
 
 - **DataSources**: IList<DataSource>
   read only, get the list of all the datasources, from main query and from controls that have datasource field seted
@@ -36,13 +38,13 @@ Properties:
   define the height of the tab panel
 
 - **TabPanels**: ICollection<TabPanel>
-  collection of panels that holds controls. [read more](TabPanel.md)
+  collection of panels that holds controls. [read more](#tabpanels)
 
 - **TilesGroups**: ICollection<ActionControlTileGroup>
   allow the user to add dynamic tile group, we cannot add tiles directly to the form
 
 - **GridOptions**: GridOptions
-  defines grid options [read more](GridOptions.md)
+  defines grid options [read more](#gridoptions)
 
 - **ControlFields**: ICollection<ControlField>
   read only, get collection of ControlField\*, collected from all the panels
@@ -108,4 +110,158 @@ Properties:
 
 - instead of writing the queries in the respective propertie, we can use a parameter reference to get query from database (from the PARAM table) `ParamRef%paramname%` this is usefull to keep all the queries in one place for ease of edition and also it is usefull when the query is too large it is recomanded to relocate it to the param table so it can free some space for the mask layout in the mask column.
 
-- We can use passed argument to the form in the queries using (`%Arg1%`, `%Arg2%` ...), these argument should be indicated from the parent form in the **_Args_** of an IAction base entity ([ActionControl](ActionControl.md) and [GridOptions](GridOptions.md)).
+- We can use passed argument to the form in the queries using (`%Arg1%`, `%Arg2%` ...), these argument should be indicated from the parent form in the **_Args_** of an IAction base entity ([ActionControl](#actioncontrol) and [GridOptions](#gridoptions)).
+
+## 1.2. TabPanels
+
+Properties:
+
+- **Caption**: string
+  define the panel caption
+
+- **ControlFields**: ICollection<ControlField>
+  define the list of controls to add to the panel [ControlField](#controlfield).
+
+```json
+controlFields: [
+  {
+    type: "Text",
+    bindingMember: "NOM",
+    caption: "NOM",
+    columnIndex: 0,
+  },
+  {
+    name: "masterControl",
+    type: "Combo",
+    bindingMember: "TIERS",
+    dataSource: "SELECT TIERS, NOM FROM SREC.TIERS",
+    caption: "Client",
+  },
+  {
+    type: "Combo",
+    bindingMember: "ID_AFFAIRE",
+    dataSource: "SELECT ID_AFFAIRE, TIERS_CLIENT AS TIERS FROM SREC.AFFAIRE WHERE TIERS_CLIENT='%MASTER_VALUE%'",
+    caption: "Affaire",
+    displayMember: "ID_AFFAIRE",
+    valueMember: "ID_AFFAIRE",
+    masterControl: "masterControl"
+  }
+],
+```
+
+- **layoutColumnCount**: integer
+  the number of columns that the form will be using to place the controls, possible values number > 0.
+  example:
+
+```json
+"layoutColumnCount": 3,
+```
+
+- **layoutRowCount**: integer
+  the number of rows that the form will be using the place the controls, possible values number > 0.
+  example:
+
+```json
+"layoutRowCount": 3,
+```
+
+- **DockStyle**: DockingStyle [Float = 0, Top = 1, Bottom = 2, Left = 3, Right = 4, Fill = 5]
+
+
+## 1.3. ControlField
+
+define the control to be added to the form.
+
+Properties:
+
+- **Caption**: string, text to be shown as caption.
+- **Type**: string, control type, possible values: ["TEXT"(default), "LABEL", "DATE", "DATETIME", "NUMERIC", "DECIMAL0", "DECIMAL2", "DECIMAL3", "PERCENT", "COMBO", "SEARCH", "CHECK", "GRID", "MEMO"]
+
+- **Name**: string, name of the control used as reference to this control when needed.
+- **BindingMember**: string, the binding member to be used.
+- **DataSource**: string, sql query or param ref to sql query. only used whith Combo || Grid controls, as we need to provide data to the control.
+- **DisplayMember**: string, used in Combo, allow the combo to show a defined column text as representation of the selected value.
+- **ValueMember**: string, used in Combo, allow the combo to use a defined column as value.
+public int DropDownRows { get; set; }
+- **Format**: string, the desplay format.
+- **ReadOnly**: bool, set to true if you want the control to be read only
+- **Mandatory**: bool, set to true if you want the value for this control to be mandatory
+- **MasterControl**: string, use to define this control as slave and use the set name of the master control, with this you can uset he master control value in the datasource query using %MASTER_VALUE%
+- **MasterColumn**: string, used to define the column name in the master field to be used
+- **DefaultValue**: string
+- **ColumnSpan**: string
+- **RowSpan**: string
+
+## 1.4. GridOptions
+
+- **Caption**: string, Panel title
+- **SQLExecute**: string, define sql to execute action on row double-click event (read more in IAction section).
+- **FormToOpen**: string, form to open action defined when double-click on grid row (read more in IAction section).
+- **ReportToOpen**: string, report to open action defined when double-click on grid row
+- **Args**: string, semicolon separated arguments to pass to the form.
+- **MultiSelect**: string, identifier column for multiselection, when defined activates multi-selection on the grid and uses the identifier as selected values, %GRID_SELECTION% as args allow you to pass the selected identifier.
+- **ShowSearchPanel** bool, show hide the search panel of the grid (default false)
+- **ShowFilterPanel** bool, show hide the filter panel of the grid (default false)
+- **ShowGroupPanel** bool, show hide the group panel of the grid (default false)
+- **ShowAutoFilterRow** bool, show hide the auto-filter sub header row (default false)
+- **StyleEvenRow** bool, style the even row
+- **StyleOddRow** bool, style the odd row
+- **Heigth** int, the overall grid heigth
+- **Columns**: ICollection<Field>, define grid columns.
+- **SummaryItems**: ICollection<SummaryItem>, define summaryItems for the grid [read more](#summaryitems)
+
+## 1.5. SummaryItems
+
+- **Type**: SummaryItemType enum, possible values
+  Sum = 0,
+  Min = 1,
+  Max = 2,
+  Count = 3,
+  Average = 4,
+  Custom = 5,
+  None = 6
+- **FieldName**: string, based field for calculation
+- **Format**: string, display format
+- **AddToColumn**: string, specify the columns where to add the summary item
+
+## 1.6. ActionControl
+
+Action control are a custom buttons we can add to our form on the very top right next to the edit and save buttons, or tile buttons we can add the the main form, to execute a custom action, these actions are IAction based actions means they need to follow IAction interface or contract.
+
+Properties:
+
+- **Name** string, control name.
+- **Caption** string, caption or label.
+- **ToolTip** string, tooltip to show on hover over the control
+- **ImagePath** string, icon or image path to show inside the button
+- **BackColor** Color, tile back color **this propery is reserved to Tiles and not buttons**
+- **ItemSize** TileItemSize, tile size enum [Default = 0, Small = 1, Medium = 2, Wide = 3, Large = 4] **this propery is reserved to Tiles and not buttons**
+
+and moste importantly too the IAction interface properties:
+
+### 1.6.1. IAction
+
+Properties:
+
+- **SQLExecute** string, contains a query to execute.
+- **FormToOpen** string, form name (identifier) to open.
+- **ReportToOpen** string, report name (identifier) to open.
+- **Args** string, comma separated args to pass to one of the obove targets.
+
+we can also add a drop down menu or a group of buttons to group some buttons that have the same context for example with a "ActionControlGroup":
+
+### 1.6.2. ActionControlGroup
+
+Properties:
+
+- **Caption** string, the grouping caption.
+- **ButtonsGroups** ICollection<ActionControlGroup>, a second level group.
+- **Buttons** ICollection<ActionControl>, a collection of button to add to the groupping.
+
+### 1.6.3. ActionControlTileGroup
+
+Properties:
+
+- **Caption** string, the grouping caption.
+- **TilesGroups** ICollection<ActionControlTileGroup>, a second level group.
+- **Tiles** ICollection<ActionControl>, a collection of tiles to add to the groupping in the main form
